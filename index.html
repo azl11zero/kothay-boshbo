@@ -868,7 +868,7 @@
     /* ========================================================
        MOBILE VIEW SWITCHER (LIST vs MAP)
     ======================================================== */
-    function setMobileView(view) {
+    function setMobileView(view, skipFlyToArea = false) {
         if (view === "map") {
             mainContainer.classList.remove("mobile-list-view");
             mainContainer.classList.add("mobile-map-view");
@@ -876,6 +876,9 @@
             if (btnListView) btnListView.classList.remove("active");
             setTimeout(() => {
                 map.invalidateSize();
+                if (!skipFlyToArea) {
+                    flyToArea(currentArea);
+                }
             }, 120);
         } else {
             mainContainer.classList.remove("mobile-map-view");
@@ -923,12 +926,30 @@
     /* ========================================================
        RENDER AREAS
     ======================================================== */
+    function flyToArea(area) {
+        try {
+            const target = AREA_DATA[area];
+            if (!target) return;
+            const size = map.getSize();
+            if (size && size.x > 0 && size.y > 0) {
+                map.flyTo([target.lat, target.lng], target.zoom, { duration: 0.8 });
+            } else {
+                map.setView([target.lat, target.lng], target.zoom);
+            }
+        } catch (e) {
+            // Silently skip map animation if map container is hidden (e.g. mobile list view)
+        }
+    }
+
     function renderAreas() {
         areasContainer.innerHTML = "";
         AREAS_LIST.forEach(area => {
             const btn = document.createElement("button");
             btn.className = `area-btn ${area === currentArea && !isShowingSavedOnly ? "active" : ""}`;
             btn.textContent = area;
+            btn.setAttribute("type", "button");
+            btn.setAttribute("aria-label", `Select ${area}`);
+
             btn.addEventListener("click", () => {
                 isShowingSavedOnly = false;
                 homeTopBtn.classList.add("active");
@@ -936,14 +957,8 @@
 
                 currentArea = area;
                 renderAreas();
-                
-                // Smooth fly-to selected area
-                const target = AREA_DATA[currentArea];
-                if (target) {
-                    map.flyTo([target.lat, target.lng], target.zoom, { duration: 1.0 });
-                }
-                
-                render();
+                render(); // Immediately update listings, section header and count
+                flyToArea(currentArea); // Safely animate map viewport
             });
             areasContainer.appendChild(btn);
         });
@@ -1106,8 +1121,9 @@
 
     function showOnMap(placeId, lat, lng) {
         if (window.innerWidth <= 850) {
-            setMobileView("map");
+            setMobileView("map", true);
         }
+        map.invalidateSize();
         map.setView([lat, lng], 17, { animate: true });
         const marker = placeMarkersMap.get(placeId);
         if (marker) {
