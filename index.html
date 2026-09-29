@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kothay Boshbo — Dhaka Restaurants &amp; Cafes</title>
+
+    <!-- Clarity City Web Font & Fallback -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/clarity-city@5.0.1/index.css" />
+
+    <!-- Leaflet & MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+    <style>
+        /* =====================================================
+           GLOBAL & TYPOGRAPHY (Clarity City & Dark/Gold Theme)
+        ===================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Clarity City', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #08090b;
+            color: #f5f5f5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button, input, select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+        .hero {
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 35px 20px;
+            background: linear-gradient(rgba(0,0,0,.75), rgba(8,9,11,.95)),
+                        url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80") center/cover;
+            border-bottom: 1px solid #242529;
+        }
+
+        .hero h1 {
+            font-size: clamp(28px, 4.5vw, 48px);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1.2px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 span {
+            color: #d6ad35;
+        }
+
+        .hero p {
+            color: #a5a6ab;
+            font-size: 14px;
+            letter-spacing: 0.2px;
+        }
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+        .topbar {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            background: #0e0f11;
+            border-bottom: 1px solid #242529;
+        }
+
+        .logo {
+            font-size: 19px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #d6ad35;
+        }
+
+        .top-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-btn {
+            border: 1px solid #2b2c30;
+            background: transparent;
+            color: #aaa;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: .2s;
+        }
+
+        .top-btn:hover {
+            background: #191a1e;
+            color: white;
+        }
+
+        .top-btn.active {
+            background: #d6ad35;
+            color: #111;
+            border-color: #d6ad35;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           TYPE SWITCH & AREAS
+        ===================================================== */
+        .type-navigation {
+            display: flex;
+            align-items: center;
+            padding: 12px 35px;
+            gap: 10px;
+            border-bottom: 1px solid #242529;
+            background: #0b0c0e;
+        }
+
+        .type-btn {
+            padding: 9px 22px;
+            border-radius: 8px;
+            border: 1px solid #292a2f;
+            background: #131418;
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .type-btn:hover {
+            background: #1c1d21;
+        }
+
+        .type-btn.active {
+            background: #d6ad35;
+            color: #111;
+            border-color: #d6ad35;
+        }
+
+        .areas {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 35px;
+            background: #0b0c0e;
+            border-bottom: 1px solid #242529;
+            scrollbar-width: thin;
+        }
+
+        .area-btn {
+            flex-shrink: 0;
+            border: 1px solid #292a2f;
+            background: #121317;
+            color: #9d9ea4;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .area-btn:hover {
+            border-color: #71602d;
+            color: white;
+        }
+
+        .area-btn.active {
+            background: #29220e;
+            border-color: #d6ad35;
+            color: #e8c65c;
+        }
+
+        /* =====================================================
+           TOOLBAR & SEARCH
+        ===================================================== */
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 14px 35px;
+            background: #0a0b0d;
+            border-bottom: 1px solid #242529;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-wrapper span {
+            position: absolute;
+            left: 14px;
+            top: 11px;
+            color: #777;
+        }
+
+        #searchInput {
+            width: 100%;
+            height: 40px;
+            padding: 0 15px 0 38px;
+            border-radius: 8px;
+            border: 1px solid #2b2c30;
+            background: #141519;
+            color: white;
+            outline: none;
+            font-size: 13px;
+        }
+
+        #searchInput:focus {
+            border-color: #8a722b;
+        }
+
+        #sortSelect {
+            min-width: 160px;
+            height: 40px;
+            border: 1px solid #2b2c30;
+            background: #141519;
+            color: #ccc;
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        /* =====================================================
+           MAIN LAYOUT (Split View)
+        ===================================================== */
+        .main {
+            display: grid;
+            grid-template-columns: 490px 1fr;
+            gap: 20px;
+            padding: 20px 35px;
+            max-width: 1650px;
+            margin: auto;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .list-header h2 {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .result-count {
+            color: #777;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: calc(100vh - 230px);
+            overflow-y: auto;
+            padding-right: 6px;
+            scrollbar-width: thin;
+        }
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
+        .card {
+            display: grid;
+            grid-template-columns: 95px 1fr 38px;
+            gap: 14px;
+            padding: 12px;
+            background: #121317;
+            border: 1px solid #25262b;
+            border-radius: 10px;
+            transition: .2s;
+            cursor: pointer;
+        }
+
+        .card:hover, .card.highlighted {
+            border-color: #7a632c;
+            background: #18191e;
+            transform: translateY(-1px);
+        }
+
+        .card-image {
+            width: 95px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #25262a;
+        }
+
+        .card-info {
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-meta {
+            color: #94959b;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .rating {
+            color: #e2bc43;
+            font-weight: 700;
+        }
+
+        .reviews-count {
+            color: #777;
+            font-size: 11px;
+        }
+
+        .maps-link {
+            display: inline-block;
+            color: #d5ae3b;
+            font-size: 11px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .maps-link:hover {
+            text-decoration: underline;
+        }
+
+        .save-btn {
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 8px;
+            background: #1a1b1f;
+            color: #777;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s;
+        }
+
+        .save-btn:hover {
+            color: #e4bf48;
+        }
+
+        .save-btn.saved {
+            color: #e4bf48;
+            background: #2a2412;
+        }
+
+        /* =====================================================
+           MAP CONTAINER & PINS
+        ===================================================== */
+        .map-container {
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 230px);
+            min-height: 520px;
+            border: 1px solid #292a2e;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #17181a;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .custom-marker {
+            width: 28px;
+            height: 28px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            background: #d6ad35;
+            border: 2px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,.6);
+            cursor: pointer;
+        }
+
+        .custom-marker::after {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 8px;
+            left: 8px;
+        }
+
+        .no-results {
+            padding: 50px 20px;
+            text-align: center;
+            border: 1px dashed #303136;
+            border-radius: 10px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* Leaflet MarkerCluster Dark/Gold Theme */
+        .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+            background-color: rgba(214, 173, 53, 0.3) !important;
+        }
+        .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+            background-color: #d6ad35 !important;
+            color: #111 !important;
+            font-weight: 800 !important;
+            font-family: 'Clarity City', sans-serif !important;
+        }
+
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+            .map-container {
+                position: relative;
+                top: 0;
+                order: -1;
+                height: 380px;
+                min-height: 380px;
+            }
+            .cards {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .topbar, .type-navigation, .areas, .toolbar, .main {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            .toolbar {
+                flex-direction: column;
+            }
+            #sortSelect {
+                width: 100%;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+    <h1>Kothay <span>Boshbo</span></h1>
+    <p>Find your next bite — Curated cafes &amp; restaurants across Dhaka.</p>
+</header>
+
+<!-- TOP NAVIGATION -->
+<nav class="topbar">
+    <div class="logo">🍴 Kothay <span>Boshbo</span></div>
+    <div class="top-links">
+        <button class="top-btn active" id="homeTopBtn">Home</button>
+        <button class="top-btn" id="savedTopBtn">Saved <span id="savedNumber"></span></button>
+    </div>
+</nav>
+
+<!-- CATEGORY TOGGLE -->
+<div class="type-navigation">
+    <button class="type-btn" data-type="restaurant">Restaurants</button>
+    <button class="type-btn active" data-type="cafe">Cafes</button>
+</div>
+
+<!-- 12 AREA SELECTORS -->
+<div class="areas" id="areas"></div>
+
+<!-- SEARCH & SORT TOOLBAR -->
+<div class="toolbar">
+    <div class="search-wrapper">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Search by name, cuisine, road, or area...">
+    </div>
+    <select id="sortSelect">
+        <option value="rating">Sort by Rating & Reviews (Default)</option>
+        <option value="reviews">Sort by Most Reviews</option>
+        <option value="name">Sort by Name (A-Z)</option>
+    </select>
+</div>
+
+<!-- MAIN DIRECTORY & MAP -->
+<main class="main">
+    <section>
+        <div class="list-header">
+            <div>
+                <h2 id="sectionTitle">Cafes in Banani</h2>
+                <div class="result-count" id="resultCount"></div>
+            </div>
+        </div>
+        <div class="cards" id="cards"></div>
+    </section>
+
+    <section class="map-container">
+        <div id="map"></div>
+    </section>
+</main>
+
+<!-- LEAFLET & CLUSTERING SCRIPTS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+<!-- APP DATA & CONFIG -->
+<script src="js/config.js"></script>
+
+<script>
+    /* ========================================================
+       AREA COORDINATES & VIEWPORTS (12 AREAS)
+    ======================================================== */
+    const AREA_DATA = {
+        "Mirpur 1":        { lat: 23.8103, lng: 90.3700, zoom: 15 },
+        "Mirpur 10":       { lat: 23.8223, lng: 90.3654, zoom: 15 },
+        "Mirpur 11":       { lat: 23.8286, lng: 90.3640, zoom: 15 },
+        "Mirpur 12":       { lat: 23.8350, lng: 90.3630, zoom: 15 },
+        "Dhanmondi":       { lat: 23.7461, lng: 90.3742, zoom: 15 },
+        "Gulshan 1":       { lat: 23.7808, lng: 90.4142, zoom: 15 },
+        "Gulshan 2":       { lat: 23.7936, lng: 90.4151, zoom: 15 },
+        "Banani":          { lat: 23.7937, lng: 90.4066, zoom: 15 },
+        "Shantinagar":     { lat: 23.7368, lng: 90.4195, zoom: 15 },
+        "Khilgaon":        { lat: 23.7333, lng: 90.4333, zoom: 15 },
+        "Bashundhara R/A": { lat: 23.8151, lng: 90.4255, zoom: 15 },
+        "Uttara":          { lat: 23.8759, lng: 90.3795, zoom: 15 }
+    };
+
+    const AREAS_LIST = Object.keys(AREA_DATA);
+
+    /* ========================================================
+       LOAD FULL CURATED PLACES (1,167+ VERIFIED VENUES)
+    ======================================================== */
+    const rawData = (typeof KothayBoshboConfig !== 'undefined' && KothayBoshboConfig.MOCK_DATA) 
+        ? KothayBoshboConfig.MOCK_DATA 
+        : [];
+
+    const places = rawData.map(p => {
+        let areaNorm = p.area || p.Area || 'Banani';
+        if (areaNorm.toLowerCase() === 'bashundhara') areaNorm = 'Bashundhara R/A';
+
+        const cat = (p.type || p.Category || 'Restaurant').toLowerCase();
+        const typeNorm = (cat.includes('cafe') || cat.includes('coffee') || cat.includes('bakery')) ? 'cafe' : 'restaurant';
+
+        return {
+            id: p.id || `pl_${Math.random()}`,
+            name: p.name || p.Name || 'Unnamed Venue',
+            type: typeNorm,
+            area: areaNorm,
+            address: p.address || p.Address || `${areaNorm}, Dhaka`,
+            rating: typeof p.rating === 'number' ? p.rating : (parseFloat(p.rating) || 4.3),
+            reviews: p.reviews || p.Reviews || '1.2K',
+            cuisine: p.cuisine || (typeNorm === 'cafe' ? 'Specialty Coffee · Bakery · Desserts' : 'Bangladeshi · Continental · Dine-in'),
+            lat: parseFloat(p.lat || p.Latitude),
+            lng: parseFloat(p.lng || p.Longitude),
+            image: p.image_url || p.image || 'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnmJmV_TYiNxkfcb76AYtDd1oUzGueDGUMdOc8OyRke3b0HdyY6mv4SpYHyo2Is3wYrJJYXUtIjXO4GMiThoB9RdmJbQcFwZJOsbpzJj9kLJYFN9qg0orc6ucNWmU6hMXF_aI0=w600-h400-k-no',
+            google_maps_url: p.google_maps_url || p['Google Map link'] || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name + ' ' + areaNorm + ' Dhaka')}`
+        };
+    });
+
+    console.log(`Loaded ${places.length} verified Dhaka places into directory.`);
+
+    /* ========================================================
+       STATE MANAGEMENT & LOCALSTORAGE PERSISTENCE
+    ======================================================== */
+    let currentType = "cafe";
+    let currentArea = "Banani";
+    let currentSort = "rating";
+    let searchQuery = "";
+    let isShowingSavedOnly = false;
+
+    // Load saved favorites from localStorage
+    let savedPlaces = new Set();
+    try {
+        const stored = localStorage.getItem('kothay_boshbo_saved');
+        if (stored) {
+            savedPlaces = new Set(JSON.parse(stored));
+        }
+    } catch(e) {}
+
+    function persistSaved() {
+        try {
+            localStorage.setItem('kothay_boshbo_saved', JSON.stringify(Array.from(savedPlaces)));
+        } catch(e) {}
+    }
+
+    let placeMarkersMap = new Map();
+
+    /* ========================================================
+       ELEMENT REFS
+    ======================================================== */
+    const areasContainer = document.getElementById("areas");
+    const cardsContainer = document.getElementById("cards");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const sectionTitle = document.getElementById("sectionTitle");
+    const resultCount = document.getElementById("resultCount");
+    const savedTopBtn = document.getElementById("savedTopBtn");
+    const homeTopBtn = document.getElementById("homeTopBtn");
+
+    /* ========================================================
+       LEAFLET SETUP (CARTO VOYAGER TILES & ESRI FALLBACK)
+    ======================================================== */
+    const initialCenter = AREA_DATA[currentArea] || { lat: 23.7937, lng: 90.4066, zoom: 15 };
+    const map = L.map("map", { zoomControl: true }).setView(
+        [initialCenter.lat, initialCenter.lng],
+        initialCenter.zoom
+    );
+
+    // Esri World Street Map (crisp, high performance, zero watermark)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '&copy; Esri &mdash; StreetMap',
+        maxZoom: 19
+    }).addTo(map);
+
+    const markerClusterGroup = L.markerClusterGroup({
+        maxClusterRadius: 35,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false
+    });
+    map.addLayer(markerClusterGroup);
+
+    const markerIcon = L.divIcon({
+        className: "",
+        html: `<div class="custom-marker"></div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 28],
+        popupAnchor: [0, -28]
+    });
+
+    /* ========================================================
+       RENDER AREAS
+    ======================================================== */
+    function renderAreas() {
+        areasContainer.innerHTML = "";
+        AREAS_LIST.forEach(area => {
+            const btn = document.createElement("button");
+            btn.className = `area-btn ${area === currentArea && !isShowingSavedOnly ? "active" : ""}`;
+            btn.textContent = area;
+            btn.addEventListener("click", () => {
+                isShowingSavedOnly = false;
+                homeTopBtn.classList.add("active");
+                savedTopBtn.classList.remove("active");
+
+                currentArea = area;
+                renderAreas();
+                
+                // Smooth fly-to selected area
+                const target = AREA_DATA[currentArea];
+                if (target) {
+                    map.flyTo([target.lat, target.lng], target.zoom, { duration: 1.0 });
+                }
+                
+                render();
+            });
+            areasContainer.appendChild(btn);
+        });
+    }
+
+    /* ========================================================
+       FILTER & SORT LOGIC
+    ======================================================== */
+    function parseReviewNum(val) {
+        if (!val) return 0;
+        if (typeof val === 'number') return val;
+        const str = val.toString().replace(/,/g, '').replace(/[()]/g, '').trim();
+        const match = str.match(/(\d+(?:\.\d+)?)\s*([KM])?/i);
+        if (!match) return 0;
+        const num = parseFloat(match[1]) || 0;
+        const suffix = (match[2] || '').toUpperCase();
+        if (suffix === 'K') return num * 1000;
+        if (suffix === 'M') return num * 1000000;
+        return num;
+    }
+
+    function getFilteredPlaces() {
+        let filtered = places.filter(place => {
+            if (isShowingSavedOnly) {
+                return savedPlaces.has(place.id);
+            }
+
+            const matchesType = place.type.toLowerCase() === currentType.toLowerCase();
+            const matchesArea = place.area.toLowerCase() === currentArea.toLowerCase();
+
+            const q = searchQuery.trim().toLowerCase();
+            const matchesSearch = !q ||
+                place.name.toLowerCase().includes(q) ||
+                place.address.toLowerCase().includes(q) ||
+                place.cuisine.toLowerCase().includes(q);
+
+            return matchesType && matchesArea && matchesSearch;
+        });
+
+        // Default: Higher rating (reviews score) -> Higher review counts -> Alphabetical
+        if (currentSort === "rating") {
+            filtered.sort((a, b) => {
+                const rDiff = (b.rating || 0) - (a.rating || 0);
+                if (Math.abs(rDiff) > 0.001) return rDiff;
+                const cDiff = parseReviewNum(b.reviews) - parseReviewNum(a.reviews);
+                if (cDiff !== 0) return cDiff;
+                return a.name.localeCompare(b.name);
+            });
+        } else if (currentSort === "reviews") {
+            filtered.sort((a, b) => {
+                const cDiff = parseReviewNum(b.reviews) - parseReviewNum(a.reviews);
+                if (cDiff !== 0) return cDiff;
+                const rDiff = (b.rating || 0) - (a.rating || 0);
+                if (Math.abs(rDiff) > 0.001) return rDiff;
+                return a.name.localeCompare(b.name);
+            });
+        } else if (currentSort === "name") {
+            filtered.sort((a, b) => a.name.localeCompare(b.name) || ((b.rating || 0) - (a.rating || 0)));
+        }
+
+        return filtered;
+    }
+
+    /* ========================================================
+       RENDER CARDS & CLUSTERED MAP PINS
+    ======================================================== */
+    function renderCards(data) {
+        cardsContainer.innerHTML = "";
+
+        if (!data.length) {
+            const emptyMsg = isShowingSavedOnly
+                ? `You haven't saved any places yet.<br><br>Click the heart (♡) on any venue card to bookmark it!`
+                : `No ${currentType}s found in ${currentArea} matching your filter.<br><br>Try searching another term or switch area.`;
+
+            cardsContainer.innerHTML = `<div class="no-results">${emptyMsg}</div>`;
+            return;
+        }
+
+        data.forEach(place => {
+            const card = document.createElement("article");
+            card.className = "card";
+            card.id = `card-${place.id}`;
+
+            const saved = savedPlaces.has(place.id);
+            const reviewsDisplay = place.reviews ? `(${place.reviews} reviews)` : '';
+
+            card.innerHTML = `
+                <img class="card-image" src="${place.image}" alt="${place.name}" loading="lazy" referrerpolicy="no-referrer">
+                <div class="card-info">
+                    <div class="card-title">${place.name}</div>
+                    <div class="card-meta">
+                        <span class="rating">★ ${place.rating.toFixed(1)}</span>
+                        <span class="reviews-count">${reviewsDisplay}</span> · 
+                        <span>${place.area}</span><br>
+                        <span>📍 ${place.address}</span><br>
+                        <small style="color:#888">${place.cuisine}</small>
+                    </div>
+                    <a class="maps-link" href="${place.google_maps_url}" target="_blank" rel="noopener">
+                        View on Google Maps ↗
+                    </a>
+                </div>
+                <button class="save-btn ${saved ? 'saved' : ''}" aria-label="Save ${place.name}">
+                    ${saved ? '♥' : '♡'}
+                </button>
+            `;
+
+            card.addEventListener("click", (e) => {
+                if (e.target.closest(".save-btn") || e.target.closest(".maps-link")) return;
+                showOnMap(place.id, place.lat, place.lng);
+            });
+
+            const saveBtn = card.querySelector(".save-btn");
+            saveBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (savedPlaces.has(place.id)) {
+                    savedPlaces.delete(place.id);
+                } else {
+                    savedPlaces.add(place.id);
+                }
+                persistSaved();
+                render();
+            });
+
+            cardsContainer.appendChild(card);
+        });
+    }
+
+    function renderMapMarkers(data) {
+        markerClusterGroup.clearLayers();
+        placeMarkersMap.clear();
+
+        data.forEach(place => {
+            if (isNaN(place.lat) || isNaN(place.lng)) return;
+
+            const marker = L.marker([place.lat, place.lng], { icon: markerIcon });
+            marker.bindPopup(`
+                <div style="min-width:180px; color:#111; font-family:'Clarity City', sans-serif;">
+                    <strong style="font-size:14px;">${place.name}</strong><br>
+                    <span style="color:#b58a17; font-weight:700;">★ ${place.rating.toFixed(1)}</span> (${place.reviews})<br>
+                    <small style="color:#555;">📍 ${place.address}</small><br><br>
+                    <a href="${place.google_maps_url}" target="_blank" rel="noopener" style="color:#0066cc; font-size:12px; font-weight:bold;">
+                        Open in Google Maps →
+                    </a>
+                </div>
+            `);
+
+            marker.on("click", () => {
+                highlightCard(place.id);
+            });
+
+            markerClusterGroup.addLayer(marker);
+            placeMarkersMap.set(place.id, marker);
+        });
+    }
+
+    function showOnMap(placeId, lat, lng) {
+        map.setView([lat, lng], 17, { animate: true });
+        const marker = placeMarkersMap.get(placeId);
+        if (marker) {
+            markerClusterGroup.zoomToShowLayer(marker, () => {
+                marker.openPopup();
+            });
+        }
+        highlightCard(placeId);
+    }
+
+    function highlightCard(placeId) {
+        document.querySelectorAll(".card").forEach(c => c.classList.remove("highlighted"));
+        const card = document.getElementById(`card-${placeId}`);
+        if (card) {
+            card.classList.add("highlighted");
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    /* ========================================================
+       MAIN RENDER DISPATCHER
+    ======================================================== */
+    function render() {
+        const filtered = getFilteredPlaces();
+        const typeLabel = currentType === "cafe" ? "Cafes" : "Restaurants";
+
+        if (isShowingSavedOnly) {
+            sectionTitle.textContent = `Saved Bookmarks`;
+            resultCount.textContent = `${filtered.length} saved places`;
+        } else {
+            sectionTitle.textContent = `${typeLabel} in ${currentArea}`;
+            resultCount.textContent = `${filtered.length} places available`;
+        }
+
+        renderCards(filtered);
+        renderMapMarkers(filtered);
+
+        document.getElementById("savedNumber").textContent =
+            savedPlaces.size ? `(${savedPlaces.size})` : "";
+    }
+
+    /* ========================================================
+       EVENT LISTENERS
+    ======================================================== */
+    document.querySelectorAll(".type-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            isShowingSavedOnly = false;
+            homeTopBtn.classList.add("active");
+            savedTopBtn.classList.remove("active");
+
+            currentType = btn.dataset.type;
+            document.querySelectorAll(".type-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            render();
+        });
+    });
+
+    searchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        render();
+    });
+
+    sortSelect.addEventListener("change", (e) => {
+        currentSort = e.target.value;
+        render();
+    });
+
+    // Top buttons: Home vs Saved
+    homeTopBtn.addEventListener("click", () => {
+        isShowingSavedOnly = false;
+        homeTopBtn.classList.add("active");
+        savedTopBtn.classList.remove("active");
+        renderAreas();
+        render();
+    });
+
+    savedTopBtn.addEventListener("click", () => {
+        isShowingSavedOnly = true;
+        savedTopBtn.classList.add("active");
+        homeTopBtn.classList.remove("active");
+        renderAreas();
+        render();
+    });
+
+    // Global image fallback handler complying with strict CSP
+    window.addEventListener("error", (e) => {
+        if (e.target && e.target.tagName === "IMG" && e.target.classList.contains("card-image")) {
+            e.target.src = "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnmJmV_TYiNxkfcb76AYtDd1oUzGueDGUMdOc8OyRke3b0HdyY6mv4SpYHyo2Is3wYrJJYXUtIjXO4GMiThoB9RdmJbQcFwZJOsbpzJj9kLJYFN9qg0orc6ucNWmU6hMXF_aI0=w600-h400-k-no";
+        }
+    }, true);
+
+    // Initial render
+    renderAreas();
+    render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1039 @@
+/* ============================================================
+   Kothay Boshbo — Luxury Black & Golden Design System
+   Find Your Next Bite — Dhaka's Curated Food Directory
+   ============================================================ */
+
+/* ── 1. Root Variables & Reset ────────────────────────────── */
+:root {
+    /* Rich Metallic Gold Palette */
+    --gold-primary:     #D4AF37;
+    --gold-light:       #F5D77F;
+    --gold-lighter:     #FFF1B8;
+    --gold-dark:        #AA820A;
+    --gold-border:      rgba(212, 175, 55, 0.28);
+    --gold-border-subtle: rgba(212, 175, 55, 0.16);
+    --gold-gradient:    linear-gradient(135deg, #F5D77F 0%, #D4AF37 55%, #AA820A 100%);
+    --gold-gradient-hover: linear-gradient(135deg, #FFF1B8 0%, #E5C158 55%, #B88E14 100%);
+    --gold-glow:        0 0 20px rgba(212, 175, 55, 0.3);
+    --gold-badge-bg:    rgba(212, 175, 55, 0.12);
+
+    /* Deep Obsidian & Matte Black Surfaces */
+    --bg-page:          #0A0A0C;
+    --bg-surface:       #131316;
+    --bg-surface-alt:   #1A1A1E;
+    --bg-surface-hover: #202026;
+    --border-light:     rgba(212, 175, 55, 0.18);
+    --border-card:      rgba(212, 175, 55, 0.2);
+
+    /* High-Contrast Typography */
+    --text-main:        #F5F5F7;
+    --text-gold:        #F5D77F;
+    --text-muted:       #9CA3AF;
+    --text-subtle:      #6B7280;
+
+    --font-family:      'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --radius-pill:      9999px;
+    --radius-card:      14px;
+    --radius-img:       10px;
+
+    --shadow-sm:        0 2px 6px rgba(0, 0, 0, 0.4);
+    --shadow-md:        0 6px 18px rgba(0, 0, 0, 0.5);
+    --shadow-lg:        0 12px 32px rgba(0, 0, 0, 0.65);
+    --transition:       all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Custom Gold Scrollbar */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0A0A0C;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.35);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.65);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ── 2. Top Navigation ────────────────────────────────────── */
+.top-nav {
+    background-color: rgba(10, 10, 12, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0.85rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-icon-wrap {
+    color: var(--gold-primary);
+    display: flex;
+    align-items: center;
+    background: rgba(212, 175, 55, 0.12);
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.brand-svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--gold-primary);
+}
+
+.brand-text-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-tagline {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: var(--transition);
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+}
+
+.nav-link:hover {
+    color: var(--gold-light);
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.nav-link.active {
+    color: var(--gold-light);
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.nav-icon {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+}
+
+.nav-icon-stroke {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+}
+
+/* ── 3. Hero Section ──────────────────────────────────────── */
+.hero-section {
+    position: relative;
+    background: #08080A url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1600&auto=format&fit=crop&q=80') center center / cover no-repeat;
+    padding: 4.5rem 1.5rem 5rem;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8, 8, 10, 0.85) 0%, rgba(8, 8, 10, 0.95) 100%);
+    backdrop-filter: blur(4px);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.hero-headline {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+    margin-bottom: 0.85rem;
+}
+
+.hero-subheadline {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-weight: 400;
+    margin-bottom: 2.2rem;
+}
+
+/* Category Toggle Group */
+.type-toggle-group {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(19, 19, 22, 0.85);
+    padding: 5px;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--gold-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    gap: 8px;
+}
+
+.type-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 2rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: transparent;
+    transition: var(--transition);
+    user-select: none;
+}
+
+.type-pill-btn:hover {
+    color: var(--gold-light);
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.type-pill-btn.active {
+    background: var(--gold-gradient);
+    color: #0A0A0C;
+    box-shadow: 0 4px 18px rgba(212, 175, 55, 0.45);
+    font-weight: 800;
+}
+
+.pill-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+/* ── 4. Area Selector Bar ─────────────────────────────────── */
+.main-wrapper {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 1.75rem 3.5rem;
+    width: 100%;
+    flex: 1;
+}
+
+.area-selector-bar {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-card);
+    padding: 0.9rem 1.4rem;
+    margin-top: -2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 10;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.area-selector-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.pin-svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--gold-primary);
+}
+
+.area-pills-scroll {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    overflow-x: auto;
+    padding: 0.25rem 0;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+}
+
+.area-pills-scroll::-webkit-scrollbar {
+    height: 4px;
+}
+.area-pills-scroll::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+}
+
+.area-pill {
+    padding: 0.48rem 1.15rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg-surface-alt);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: #D1D5DB;
+    white-space: nowrap;
+    transition: var(--transition);
+    user-select: none;
+}
+
+.area-pill:hover {
+    border-color: var(--gold-primary);
+    color: var(--gold-light);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.area-pill.active {
+    background: var(--gold-gradient);
+    border-color: var(--gold-light);
+    color: #0A0A0C;
+    font-weight: 800;
+    box-shadow: 0 2px 12px rgba(212, 175, 55, 0.35);
+}
+
+/* ── 5. Split Content Layout ──────────────────────────────── */
+.content-split-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ── 6. Left Column: Results List ─────────────────────────── */
+.results-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.results-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.results-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.results-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+
+.results-count {
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.results-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sort-wrapper {
+    position: relative;
+}
+
+.sort-dropdown {
+    appearance: none;
+    background: var(--bg-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 0.85rem center;
+    border: 1px solid var(--border-light);
+    border-radius: 9px;
+    padding: 0.5rem 2.2rem 0.5rem 0.95rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.sort-dropdown:hover,
+.sort-dropdown:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.sort-dropdown option {
+    background: #141417;
+    color: #F5F5F7;
+}
+
+/* Refresh Button */
+.action-refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: 9px;
+    background: var(--bg-surface);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    transition: var(--transition);
+}
+
+.action-refresh-btn:hover {
+    color: var(--gold-lighter);
+    border-color: var(--gold-primary);
+    background: rgba(212, 175, 55, 0.12);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+}
+
+.refresh-svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--gold-primary);
+}
+
+.action-refresh-btn.loading .refresh-svg {
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── 7. Live Search Bar ───────────────────────────────────── */
+.search-bar-wrap {
+    margin-bottom: 1.25rem;
+}
+
+.search-input-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: 11px;
+    padding: 0.65rem 1.1rem;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-input-box:hover {
+    border-color: var(--gold-primary);
+}
+
+.search-input-box:focus-within {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25), 0 4px 14px rgba(0, 0, 0, 0.4);
+    background: var(--bg-surface-alt);
+}
+
+.search-icon-svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--gold-primary);
+    flex-shrink: 0;
+}
+
+.search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--text-main);
+}
+
+.search-input::placeholder {
+    color: var(--text-subtle);
+}
+
+.search-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--gold-light);
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.search-clear-btn:hover {
+    background: rgba(212, 175, 55, 0.25);
+    color: #FFFFFF;
+}
+
+/* ── 8. Listings Cards (Horizontal Row Layout) ─────────────── */
+.listings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.listing-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-card);
+    padding: 0.95rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.listing-card:hover {
+    border-color: var(--gold-primary);
+    background: var(--bg-surface-alt);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 14px rgba(212, 175, 55, 0.15);
+    transform: translateY(-2px);
+}
+
+.listing-card.active-selected {
+    border-color: var(--gold-light);
+    background-color: var(--bg-surface-alt);
+    box-shadow: 0 0 0 2px var(--gold-primary), 0 8px 24px rgba(212, 175, 55, 0.25);
+}
+
+/* Card Image Thumbnail */
+.card-thumb-wrap {
+    width: 130px;
+    height: 94px;
+    border-radius: var(--radius-img);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #1A1A1E;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.listing-card:hover .card-thumb {
+    transform: scale(1.05);
+}
+
+/* Card Info */
+.card-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.card-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.25;
+    letter-spacing: -0.2px;
+}
+
+/* Stats Row: Rating & Reviews */
+.card-stats-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--gold-badge-bg);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--gold-light);
+}
+
+.star-icon {
+    color: var(--gold-primary);
+    font-size: 0.82rem;
+}
+
+.reviews-count {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.82rem;
+}
+
+/* Category / Cuisine Row */
+.card-cuisine {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-type-tag {
+    font-weight: 700;
+    color: var(--gold-light);
+}
+
+/* Location Address */
+.card-location {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.loc-pin-icon {
+    width: 13px;
+    height: 13px;
+    fill: var(--gold-primary);
+    flex-shrink: 0;
+}
+
+/* Google Maps Link */
+.card-maps-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-top: 0.2rem;
+    transition: var(--transition);
+    width: fit-content;
+}
+
+.card-maps-link:hover {
+    color: var(--gold-lighter);
+    text-decoration: underline;
+}
+
+.maps-pin-svg {
+    width: 13px;
+    height: 13px;
+    fill: var(--gold-primary);
+}
+
+/* Chevron Right */
+.card-chevron {
+    color: rgba(212, 175, 55, 0.4);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.listing-card:hover .card-chevron {
+    transform: translateX(4px);
+    color: var(--gold-primary);
+}
+
+.chevron-svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ── 9. Right Column: Interactive Map ─────────────────────── */
+.map-column {
+    position: sticky;
+    top: 5.5rem;
+}
+
+.map-card-wrapper {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    height: 610px;
+}
+
+/* Map / Satellite Mode Switcher */
+.map-view-switcher {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 1000;
+    background: rgba(19, 19, 22, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    display: flex;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+}
+
+.map-tab-btn {
+    padding: 0.42rem 0.95rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: transparent;
+    transition: var(--transition);
+}
+
+.map-tab-btn:hover {
+    color: var(--gold-light);
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.map-tab-btn.active {
+    background: var(--gold-gradient);
+    color: #0A0A0C;
+    font-weight: 800;
+}
+
+/* Map Canvas */
+.dhaka-map-canvas {
+    width: 100%;
+    height: 100%;
+    background: #0F0F12;
+    z-index: 1;
+}
+
+/* Custom Marker Styling */
+.custom-map-pin {
+    width: 28px;
+    height: 34px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pin-marker-svg {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
+    transition: transform 0.2s ease;
+}
+
+.custom-map-pin:hover .pin-marker-svg {
+    transform: scale(1.2);
+}
+
+/* Leaflet Popup Styling */
+.leaflet-popup-content-wrapper {
+    background: #141418 !important;
+    color: #F5F5F7 !important;
+    border: 1px solid var(--gold-primary) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 16px rgba(212, 175, 55, 0.25) !important;
+    padding: 0;
+    overflow: hidden;
+}
+
+.leaflet-popup-tip {
+    background: #141418 !important;
+    border: 1px solid var(--gold-primary) !important;
+}
+
+.leaflet-popup-close-button {
+    color: var(--gold-primary) !important;
+    padding: 6px 8px !important;
+}
+
+.leaflet-popup-close-button:hover {
+    color: #FFFFFF !important;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    font-family: var(--font-family);
+    line-height: 1.4;
+    min-width: 210px;
+}
+
+.map-popup-inner {
+    padding: 0.85rem 1rem;
+}
+
+.map-popup-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 0.35rem;
+}
+
+.map-popup-meta {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.popup-rating {
+    font-weight: 700;
+    color: var(--gold-light);
+}
+
+.map-popup-addr {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
+}
+
+.map-popup-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    transition: var(--transition);
+}
+
+.map-popup-link:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+/* ── 10. State Views (Loading & Empty) ─────────────────────── */
+.state-view {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--bg-surface);
+    border: 1px dashed var(--border-light);
+    border-radius: var(--radius-card);
+}
+
+.loading-ring {
+    width: 38px;
+    height: 38px;
+    border: 3px solid rgba(212, 175, 55, 0.2);
+    border-top-color: var(--gold-primary);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: spin 0.75s linear infinite;
+}
+
+.empty-badge {
+    font-size: 2.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.state-view h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 0.4rem;
+}
+
+.state-view p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+/* ── 11. Footer ────────────────────────────────────────────── */
+.app-footer {
+    background: #08080A;
+    border-top: 1px solid var(--border-light);
+    padding: 2rem 1.75rem;
+    margin-top: auto;
+}
+
+.footer-inner {
+    max-width: 1360px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+}
+
+.footer-inner strong {
+    color: var(--gold-light);
+}
+
+/* ── 12. Responsive Styles ─────────────────────────────────── */
+@media (max-width: 1024px) {
+    .content-split-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .map-column {
+        position: static;
+        order: 2;
+    }
+
+    .map-card-wrapper {
+        height: 420px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0.75rem 1rem;
+    }
+
+    .hero-section {
+        padding: 3rem 1rem 3.8rem;
+    }
+
+    .area-selector-bar {
+        margin-top: -1.5rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .area-selector-label {
+        font-size: 0.88rem;
+    }
+
+    .listing-card {
+        padding: 0.85rem;
+        gap: 0.85rem;
+    }
+
+    .card-thumb-wrap {
+        width: 100px;
+        height: 80px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .type-pill-btn {
+        padding: 0.6rem 1.35rem;
+        font-size: 0.9rem;
+    }
+
+    .card-thumb-wrap {
+        width: 85px;
+        height: 75px;
+    }
+
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .results-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
