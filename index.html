@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#08090b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Kothay Boshbo — Dhaka Restaurants &amp; Cafes</title>
 
     <!-- Clarity City Web Font & Fallback -->
@@ -443,35 +446,250 @@
             font-family: 'Clarity City', sans-serif !important;
         }
 
-        @media (max-width: 1024px) {
+        /* Floating Mobile View Switcher (Hidden on Desktop) */
+        .mobile-view-bar {
+            display: none;
+        }
+
+        /* Responsive Tablet & Desktop (Split View remains on 851px+) */
+        @media (max-width: 1024px) and (min-width: 851px) {
             .main {
-                grid-template-columns: 1fr;
-            }
-            .map-container {
-                position: relative;
-                top: 0;
-                order: -1;
-                height: 380px;
-                min-height: 380px;
-            }
-            .cards {
-                max-height: none;
+                grid-template-columns: 420px 1fr;
+                padding: 16px 20px;
+                gap: 16px;
             }
         }
 
-        @media (max-width: 650px) {
-            .topbar, .type-navigation, .areas, .toolbar, .main {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-            .toolbar {
-                flex-direction: column;
-            }
-            #sortSelect {
-                width: 100%;
+        /* =====================================================
+           MOBILE PHONE VIEW (<= 850px)
+        ===================================================== */
+        @media (max-width: 850px) {
+            /* Compact Hero */
+            .hero {
+                min-height: 120px;
+                padding: 24px 16px;
             }
             .hero h1 {
-                font-size: 28px;
+                font-size: 24px;
+                letter-spacing: -0.6px;
+                margin-bottom: 4px;
+            }
+            .hero p {
+                font-size: 13px;
+                line-height: 1.35;
+            }
+
+            /* Sleek Topbar */
+            .topbar {
+                height: 52px;
+                padding: 0 16px;
+            }
+            .logo {
+                font-size: 17px;
+            }
+            .top-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            /* Type Navigation (Restaurants / Cafes) */
+            .type-navigation {
+                padding: 8px 16px;
+                gap: 8px;
+            }
+            .type-btn {
+                flex: 1;
+                text-align: center;
+                padding: 9px 12px;
+                font-size: 13px;
+            }
+
+            /* 12 Area Carousel */
+            .areas {
+                padding: 8px 16px;
+                gap: 6px;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+            }
+            .areas::-webkit-scrollbar {
+                display: none;
+            }
+            .area-btn {
+                padding: 6px 13px;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+
+            /* Search & Sort Toolbar */
+            .toolbar {
+                padding: 10px 16px;
+                gap: 8px;
+                flex-direction: column;
+            }
+            .search-wrapper span {
+                top: 12px;
+            }
+            #searchInput {
+                height: 42px;
+                font-size: 16px; /* Prevents iOS Safari auto-zoom */
+            }
+            #sortSelect {
+                height: 40px;
+                width: 100%;
+                font-size: 14px;
+            }
+
+            /* Main Layout */
+            .main {
+                display: block;
+                padding: 14px 16px;
+                margin: 0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .list-header {
+                margin-bottom: 12px;
+            }
+            .list-header h2 {
+                font-size: 17px;
+            }
+
+            /* Cards Container */
+            .cards {
+                max-height: none;
+                overflow-y: visible;
+                padding-right: 0;
+                padding-bottom: 90px; /* Space for floating bottom bar */
+                gap: 10px;
+            }
+
+            /* Card Responsive Dimensions */
+            .card {
+                grid-template-columns: 84px 1fr 36px;
+                gap: 10px;
+                padding: 10px;
+                border-radius: 8px;
+            }
+            .card:active {
+                transform: scale(0.99);
+                background: #18191e;
+            }
+            .card-image {
+                width: 84px;
+                height: 78px;
+                border-radius: 6px;
+            }
+            .card-title {
+                font-size: 14px;
+                line-height: 1.25;
+                margin-bottom: 3px;
+            }
+            .card-meta {
+                font-size: 11px;
+                line-height: 1.35;
+            }
+            .maps-link {
+                font-size: 11px;
+                margin-top: 5px;
+                display: inline-block;
+            }
+            .save-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 17px;
+            }
+
+            /* Floating View Toggle Bar (Airbnb Style) */
+            .mobile-view-bar {
+                display: flex;
+                position: fixed;
+                bottom: calc(18px + env(safe-area-inset-bottom));
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1000;
+                background: rgba(14, 15, 18, 0.95);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                border: 1px solid #3c341b;
+                border-radius: 30px;
+                padding: 4px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(214, 173, 53, 0.25);
+            }
+
+            .mobile-view-btn {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 9px 18px;
+                border-radius: 25px;
+                border: none;
+                background: transparent;
+                color: #9d9ea4;
+                font-size: 13px;
+                font-weight: 700;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                cursor: pointer;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .mobile-view-btn.active {
+                background: #d6ad35;
+                color: #111;
+                box-shadow: 0 2px 10px rgba(214, 173, 53, 0.35);
+            }
+
+            .mobile-badge {
+                font-size: 11px;
+                opacity: 0.85;
+            }
+
+            /* Mode switching on mobile: List View vs Map View */
+            .main.mobile-list-view .map-container {
+                display: none !important;
+            }
+            .main.mobile-list-view .cards-section {
+                display: block !important;
+            }
+
+            .main.mobile-map-view .cards-section {
+                display: none !important;
+            }
+            .main.mobile-map-view .map-container {
+                display: block !important;
+                height: calc(100vh - 210px);
+                height: calc(100dvh - 210px);
+                min-height: 420px;
+                position: relative;
+                top: 0;
+                border-radius: 12px;
+                margin-bottom: 80px;
+            }
+        }
+
+        /* Extra small phones (<= 360px, e.g. small Androids) */
+        @media (max-width: 360px) {
+            .card {
+                grid-template-columns: 72px 1fr 32px;
+                gap: 8px;
+                padding: 8px;
+            }
+            .card-image {
+                width: 72px;
+                height: 70px;
+            }
+            .card-title {
+                font-size: 13px;
+            }
+            .top-btn {
+                padding: 5px 8px;
+                font-size: 11px;
+            }
+            .mobile-view-btn {
+                padding: 8px 14px;
+                font-size: 12px;
             }
         }
     </style>
@@ -516,8 +734,8 @@
 </div>
 
 <!-- MAIN DIRECTORY & MAP -->
-<main class="main">
-    <section>
+<main class="main mobile-list-view" id="mainContainer">
+    <section class="cards-section" id="cardsSection">
         <div class="list-header">
             <div>
                 <h2 id="sectionTitle">Cafes in Banani</h2>
@@ -527,10 +745,23 @@
         <div class="cards" id="cards"></div>
     </section>
 
-    <section class="map-container">
+    <section class="map-container" id="mapSection">
         <div id="map"></div>
     </section>
 </main>
+
+<!-- FLOATING MOBILE VIEW SWITCHER (Airbnb style) -->
+<nav class="mobile-view-bar" id="mobileViewBar" aria-label="Mobile view mode">
+    <button class="mobile-view-btn active" id="btnListView" type="button" aria-label="Switch to List view">
+        <span>📋</span>
+        <span>List</span>
+        <span id="mobileCountBadge" class="mobile-badge"></span>
+    </button>
+    <button class="mobile-view-btn" id="btnMapView" type="button" aria-label="Switch to Map view">
+        <span>🗺️</span>
+        <span>Map</span>
+    </button>
+</nav>
 
 <!-- LEAFLET & CLUSTERING SCRIPTS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -629,12 +860,41 @@
     const resultCount = document.getElementById("resultCount");
     const savedTopBtn = document.getElementById("savedTopBtn");
     const homeTopBtn = document.getElementById("homeTopBtn");
+    const mainContainer = document.getElementById("mainContainer");
+    const btnListView = document.getElementById("btnListView");
+    const btnMapView = document.getElementById("btnMapView");
+    const mobileCountBadge = document.getElementById("mobileCountBadge");
 
     /* ========================================================
-       LEAFLET SETUP (CARTO VOYAGER TILES & ESRI FALLBACK)
+       MOBILE VIEW SWITCHER (LIST vs MAP)
+    ======================================================== */
+    function setMobileView(view) {
+        if (view === "map") {
+            mainContainer.classList.remove("mobile-list-view");
+            mainContainer.classList.add("mobile-map-view");
+            if (btnMapView) btnMapView.classList.add("active");
+            if (btnListView) btnListView.classList.remove("active");
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 120);
+        } else {
+            mainContainer.classList.remove("mobile-map-view");
+            mainContainer.classList.add("mobile-list-view");
+            if (btnListView) btnListView.classList.add("active");
+            if (btnMapView) btnMapView.classList.remove("active");
+        }
+    }
+
+    if (btnListView && btnMapView) {
+        btnListView.addEventListener("click", () => setMobileView("list"));
+        btnMapView.addEventListener("click", () => setMobileView("map"));
+    }
+
+    /* ========================================================
+       LEAFLET SETUP (ESRI WORLD STREET MAP)
     ======================================================== */
     const initialCenter = AREA_DATA[currentArea] || { lat: 23.7937, lng: 90.4066, zoom: 15 };
-    const map = L.map("map", { zoomControl: true }).setView(
+    const map = L.map("map", { zoomControl: true, tap: false }).setView(
         [initialCenter.lat, initialCenter.lng],
         initialCenter.zoom
     );
@@ -821,12 +1081,17 @@
             const marker = L.marker([place.lat, place.lng], { icon: markerIcon });
             marker.bindPopup(`
                 <div style="min-width:180px; color:#111; font-family:'Clarity City', sans-serif;">
-                    <strong style="font-size:14px;">${place.name}</strong><br>
-                    <span style="color:#b58a17; font-weight:700;">★ ${place.rating.toFixed(1)}</span> (${place.reviews})<br>
-                    <small style="color:#555;">📍 ${place.address}</small><br><br>
-                    <a href="${place.google_maps_url}" target="_blank" rel="noopener" style="color:#0066cc; font-size:12px; font-weight:bold;">
-                        Open in Google Maps →
-                    </a>
+                    <strong style="font-size:14px; line-height:1.2; display:block; margin-bottom:4px;">${place.name}</strong>
+                    <span style="color:#b58a17; font-weight:700;">★ ${place.rating.toFixed(1)}</span> <small style="color:#555">(${place.reviews}) · ${place.area}</small><br>
+                    <small style="color:#666; display:block; margin:4px 0;">📍 ${place.address}</small>
+                    <div style="margin-top:8px; display:flex; gap:12px; align-items:center;">
+                        <a href="${place.google_maps_url}" target="_blank" rel="noopener" style="color:#0066cc; font-size:12px; font-weight:bold;">
+                            Google Maps ↗
+                        </a>
+                        <button class="popup-list-btn" data-place-id="${place.id}" style="background:none; border:none; color:#71602d; font-size:12px; font-weight:bold; cursor:pointer; padding:0;">
+                            View in List →
+                        </button>
+                    </div>
                 </div>
             `);
 
@@ -840,6 +1105,9 @@
     }
 
     function showOnMap(placeId, lat, lng) {
+        if (window.innerWidth <= 850) {
+            setMobileView("map");
+        }
         map.setView([lat, lng], 17, { animate: true });
         const marker = placeMarkersMap.get(placeId);
         if (marker) {
@@ -879,6 +1147,10 @@
 
         document.getElementById("savedNumber").textContent =
             savedPlaces.size ? `(${savedPlaces.size})` : "";
+
+        if (mobileCountBadge) {
+            mobileCountBadge.textContent = `(${filtered.length})`;
+        }
     }
 
     /* ========================================================
@@ -930,6 +1202,18 @@
             e.target.src = "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnmJmV_TYiNxkfcb76AYtDd1oUzGueDGUMdOc8OyRke3b0HdyY6mv4SpYHyo2Is3wYrJJYXUtIjXO4GMiThoB9RdmJbQcFwZJOsbpzJj9kLJYFN9qg0orc6ucNWmU6hMXF_aI0=w600-h400-k-no";
         }
     }, true);
+
+    // Delegated click listener for popup "View in List" button
+    document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".popup-list-btn");
+        if (btn) {
+            const placeId = btn.dataset.placeId;
+            setMobileView("list");
+            setTimeout(() => {
+                highlightCard(placeId);
+            }, 120);
+        }
+    });
 
     // Initial render
     renderAreas();
