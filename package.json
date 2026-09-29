@@ -1,4 +1,11 @@
 {
+  "name": "kothay-boshbo",
+  "version": "1.0.0",
+  "description": "Dhaka Restaurant & Cafe Directory",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "compression": "^1.8.2",
     "cors": "^2.8.6",
