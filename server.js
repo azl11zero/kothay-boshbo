@@ -219,6 +219,29 @@ loadListings();
 // Favicon handler
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
+// Robots.txt Endpoint
+app.get('/robots.txt', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.send(`User-agent: *\nAllow: /\n\nSitemap: https://kothay-boshbo.onrender.com/sitemap.xml\n`);
+});
+
+// Sitemap.xml Endpoint
+app.get('/sitemap.xml', (req, res) => {
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    const today = new Date().toISOString().split('T')[0];
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://kothay-boshbo.onrender.com/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`);
+});
+
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
     res.json({
