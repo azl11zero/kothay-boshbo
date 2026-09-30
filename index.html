@@ -6,6 +6,9 @@
     <meta name="theme-color" content="#08090b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Kothay Boshbo — Dhaka Restaurants &amp; Cafes</title>
 
     <!-- Clarity City Web Font & Fallback -->
@@ -176,6 +179,8 @@
             background: #0b0c0e;
             border-bottom: 1px solid #242529;
             scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
         }
 
         .area-btn {
@@ -188,6 +193,10 @@
             font-size: 12px;
             font-weight: 600;
             transition: .2s;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .area-btn:hover {
@@ -210,6 +219,7 @@
             padding: 14px 35px;
             background: #0a0b0d;
             border-bottom: 1px solid #242529;
+            align-items: center;
         }
 
         .search-wrapper {
@@ -240,16 +250,33 @@
             border-color: #8a722b;
         }
 
-        #sortSelect {
-            min-width: 160px;
+        .toolbar-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        #areaSelect, #sortSelect {
+            min-width: 155px;
             height: 40px;
             border: 1px solid #2b2c30;
             background: #141519;
-            color: #ccc;
+            color: #e8c65c;
             border-radius: 8px;
             padding: 0 12px;
             font-size: 13px;
+            font-weight: 500;
             outline: none;
+            cursor: pointer;
+            transition: border-color .2s;
+        }
+
+        #sortSelect {
+            color: #ccc;
+        }
+
+        #areaSelect:focus, #sortSelect:focus,
+        #areaSelect:hover, #sortSelect:hover {
+            border-color: #d6ad35;
         }
 
         /* =====================================================
@@ -534,10 +561,17 @@
                 height: 42px;
                 font-size: 16px; /* Prevents iOS Safari auto-zoom */
             }
-            #sortSelect {
-                height: 40px;
+            .toolbar-controls {
+                display: flex;
+                gap: 8px;
                 width: 100%;
-                font-size: 14px;
+            }
+            #areaSelect, #sortSelect {
+                flex: 1;
+                min-width: 0;
+                width: 50%;
+                height: 42px;
+                font-size: 13px;
             }
 
             /* Main Layout */
@@ -726,11 +760,14 @@
         <span>⌕</span>
         <input id="searchInput" type="search" placeholder="Search by name, cuisine, road, or area...">
     </div>
-    <select id="sortSelect">
-        <option value="rating">Sort by Rating & Reviews (Default)</option>
-        <option value="reviews">Sort by Most Reviews</option>
-        <option value="name">Sort by Name (A-Z)</option>
-    </select>
+    <div class="toolbar-controls">
+        <select id="areaSelect" aria-label="Select Area"></select>
+        <select id="sortSelect" aria-label="Sort places">
+            <option value="rating">Sort by Rating &amp; Reviews (Default)</option>
+            <option value="reviews">Sort by Most Reviews</option>
+            <option value="name">Sort by Name (A-Z)</option>
+        </select>
+    </div>
 </div>
 
 <!-- MAIN DIRECTORY & MAP -->
@@ -768,7 +805,7 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <!-- APP DATA & CONFIG -->
-<script src="js/config.js"></script>
+<script src="js/config.js?v=2.2"></script>
 
 <script>
     /* ========================================================
@@ -853,6 +890,7 @@
        ELEMENT REFS
     ======================================================== */
     const areasContainer = document.getElementById("areas");
+    const areaSelect = document.getElementById("areaSelect");
     const cardsContainer = document.getElementById("cards");
     const searchInput = document.getElementById("searchInput");
     const sortSelect = document.getElementById("sortSelect");
@@ -924,7 +962,7 @@
     });
 
     /* ========================================================
-       RENDER AREAS
+       AREA CONTROLS (PILLS & DROPDOWN SYNC)
     ======================================================== */
     function flyToArea(area) {
         try {
@@ -941,27 +979,84 @@
         }
     }
 
-    function renderAreas() {
+    function initAreaControls() {
+        // 1. Build Area Pills (created ONCE to preserve scroll and touch state)
         areasContainer.innerHTML = "";
         AREAS_LIST.forEach(area => {
             const btn = document.createElement("button");
             btn.className = `area-btn ${area === currentArea && !isShowingSavedOnly ? "active" : ""}`;
             btn.textContent = area;
             btn.setAttribute("type", "button");
+            btn.dataset.area = area;
             btn.setAttribute("aria-label", `Select ${area}`);
 
-            btn.addEventListener("click", () => {
-                isShowingSavedOnly = false;
-                homeTopBtn.classList.add("active");
-                savedTopBtn.classList.remove("active");
-
-                currentArea = area;
-                renderAreas();
-                render(); // Immediately update listings, section header and count
-                flyToArea(currentArea); // Safely animate map viewport
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                selectArea(area);
             });
             areasContainer.appendChild(btn);
         });
+
+        // 2. Populate Area Dropdown
+        if (areaSelect) {
+            areaSelect.innerHTML = "";
+            AREAS_LIST.forEach(area => {
+                const opt = document.createElement("option");
+                opt.value = area;
+                opt.textContent = `📍 ${area}`;
+                if (area === currentArea) opt.selected = true;
+                areaSelect.appendChild(opt);
+            });
+            areaSelect.addEventListener("change", (e) => {
+                selectArea(e.target.value);
+            });
+        }
+    }
+
+    function selectArea(area) {
+        if (!area || !AREA_DATA[area]) return;
+        currentArea = area;
+        isShowingSavedOnly = false;
+        if (homeTopBtn) homeTopBtn.classList.add("active");
+        if (savedTopBtn) savedTopBtn.classList.remove("active");
+
+        // Sync pill buttons without recreating DOM
+        const allBtns = areasContainer.querySelectorAll(".area-btn");
+        allBtns.forEach(btn => {
+            const isActive = (btn.dataset.area === currentArea && !isShowingSavedOnly);
+            btn.classList.toggle("active", isActive);
+            if (isActive) {
+                btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        });
+
+        // Sync area dropdown
+        if (areaSelect && areaSelect.value !== currentArea) {
+            areaSelect.value = currentArea;
+        }
+
+        render(); // Instantly update listings, header, count, and pins
+        flyToArea(currentArea); // Safely animate map viewport
+
+        // Reset venue list scroll to top so the new area's top places are immediately visible
+        if (cardsContainer) cardsContainer.scrollTop = 0;
+        if (window.innerWidth <= 850) {
+            const cardsSection = document.getElementById("cardsSection");
+            if (cardsSection && window.scrollY > cardsSection.offsetTop) {
+                cardsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }
+
+    function renderAreas() {
+        const allBtns = areasContainer.querySelectorAll(".area-btn");
+        allBtns.forEach(btn => {
+            const isActive = (btn.dataset.area === currentArea && !isShowingSavedOnly);
+            btn.classList.toggle("active", isActive);
+        });
+        if (areaSelect && areaSelect.value !== currentArea) {
+            areaSelect.value = currentArea;
+        }
     }
 
     /* ========================================================
@@ -993,7 +1088,8 @@
             const matchesSearch = !q ||
                 place.name.toLowerCase().includes(q) ||
                 place.address.toLowerCase().includes(q) ||
-                place.cuisine.toLowerCase().includes(q);
+                place.cuisine.toLowerCase().includes(q) ||
+                place.area.toLowerCase().includes(q);
 
             return matchesType && matchesArea && matchesSearch;
         });
@@ -1187,6 +1283,13 @@
 
     searchInput.addEventListener("input", (e) => {
         searchQuery = e.target.value;
+        const trimmed = searchQuery.trim().toLowerCase();
+        // If user typed an area name (e.g. 'dhanmondi', 'uttara', 'mirpur 10', 'gulshan 2', etc.)
+        const matchedArea = AREAS_LIST.find(a => a.toLowerCase() === trimmed);
+        if (matchedArea && matchedArea !== currentArea) {
+            selectArea(matchedArea);
+            return;
+        }
         render();
     });
 
@@ -1200,15 +1303,14 @@
         isShowingSavedOnly = false;
         homeTopBtn.classList.add("active");
         savedTopBtn.classList.remove("active");
-        renderAreas();
-        render();
+        selectArea(currentArea);
     });
 
     savedTopBtn.addEventListener("click", () => {
         isShowingSavedOnly = true;
         savedTopBtn.classList.add("active");
         homeTopBtn.classList.remove("active");
-        renderAreas();
+        areasContainer.querySelectorAll(".area-btn").forEach(b => b.classList.remove("active"));
         render();
     });
 
@@ -1231,8 +1333,8 @@
         }
     });
 
-    // Initial render
-    renderAreas();
+    // Initial setup & render
+    initAreaControls();
     render();
 </script>
 

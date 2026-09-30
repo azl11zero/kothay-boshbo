@@ -318,17 +318,23 @@ app.use(express.static(PUBLIC_DIR, {
     dotfiles: 'ignore',
     etag: true,
     lastModified: true,
-    maxAge: '1h',
     setHeaders: (res, filePath) => {
-        // Enforce no-cache on dynamic config and listings JSON
-        if (filePath.endsWith('config.js') || filePath.endsWith('all_listings.json')) {
-            res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+        // Enforce strict no-cache on HTML, dynamic config and listings JSON
+        if (filePath.endsWith('.html') || filePath.endsWith('config.js') || filePath.endsWith('all_listings.json')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
+        } else {
+            res.setHeader('Cache-Control', 'public, max-age=86400');
         }
     }
 }));
 
 // Route fallback for root index
 app.get('/', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
 });
 
