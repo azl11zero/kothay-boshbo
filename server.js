@@ -264,7 +264,7 @@ app.get('/api/places', (req, res) => {
     const area = typeof req.query.area === 'string' ? req.query.area.trim() : null;
     const type = typeof req.query.type === 'string' ? req.query.type.toLowerCase().trim() : null;
     const search = typeof req.query.q === 'string' ? req.query.q.toLowerCase().trim().slice(0, 50) : null;
-    const sort = typeof req.query.sort === 'string' ? req.query.sort.toLowerCase().trim() : 'rating';
+    const sort = typeof req.query.sort === 'string' ? req.query.sort.toLowerCase().trim() : 'reviews';
 
     let results = cachedListings;
 

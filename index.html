@@ -763,8 +763,8 @@
     <div class="toolbar-controls">
         <select id="areaSelect" aria-label="Select Area"></select>
         <select id="sortSelect" aria-label="Sort places">
-            <option value="rating">Sort by Rating &amp; Reviews (Default)</option>
-            <option value="reviews">Sort by Most Reviews</option>
+            <option value="reviews" selected>Sort by Most Reviews (Default)</option>
+            <option value="rating">Sort by Highest Rating</option>
             <option value="name">Sort by Name (A-Z)</option>
         </select>
     </div>
@@ -865,7 +865,7 @@
     ======================================================== */
     let currentType = "cafe";
     let currentArea = "Banani";
-    let currentSort = "rating";
+    let currentSort = "reviews";
     let searchQuery = "";
     let isShowingSavedOnly = false;
 
