@@ -726,6 +726,38 @@
                 font-size: 12px;
             }
         }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+        .app-footer {
+            text-align: center;
+            padding: 24px 16px 36px;
+            border-top: 1px solid #1a1b20;
+            background: #08090b;
+        }
+
+        .creator-link {
+            color: #9d9ea4;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s, text-decoration 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .creator-link:hover {
+            color: #e8c65c;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 850px) {
+            .app-footer {
+                padding-bottom: 95px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -786,6 +818,13 @@
         <div id="map"></div>
     </section>
 </main>
+
+<!-- FOOTER -->
+<footer class="app-footer">
+    <a href="https://www.linkedin.com/in/md-azmaeen-fayek-a871aa276/?isSelfProfile=true" target="_blank" rel="noopener noreferrer" class="creator-link">
+        Created by Azmaeen
+    </a>
+</footer>
 
 <!-- FLOATING MOBILE VIEW SWITCHER (Airbnb style) -->
 <nav class="mobile-view-bar" id="mobileViewBar" aria-label="Mobile view mode">
