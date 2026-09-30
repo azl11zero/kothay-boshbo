@@ -25,6 +25,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const compression = require('compression');
+const https = require('https');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -364,5 +365,18 @@ const server = app.listen(PORT, () => {
     console.log(`🌐 Serving on: http://localhost:${PORT}`);
     console.log(`================================================================\n`);
 });
+
+// ── LAYER 11: RENDER FREE TIER KEEP-ALIVE PINGER ─────────────────────────────
+// Pings external public URL every 14 minutes to prevent Render free instance from sleeping
+if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
+    const keepAliveUrl = process.env.RENDER_EXTERNAL_URL || 'https://kothay-boshbo.onrender.com';
+    setInterval(() => {
+        https.get(`${keepAliveUrl}/api/health`, (res) => {
+            // Heartbeat response received
+        }).on('error', () => {
+            // Ignore temporary network transients
+        });
+    }, 14 * 60 * 1000);
+}
 
 module.exports = app;
