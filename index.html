@@ -14,6 +14,131 @@
     <meta name="description" content="Find your next bite with Kothay Boshbo — Curated cafes &amp; restaurants across 12 Dhaka neighborhoods with interactive maps, verified reviews, and ratings.">
     <link rel="canonical" href="https://kothay-boshbo.onrender.com/">
 
+    <!-- Schema.org JSON-LD Structured Data for Search Engine Indexing -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Kothay Boshbo",
+      "alternateName": ["KothayBoshbo", "Dhaka Restaurants and Cafes"],
+      "url": "https://kothay-boshbo.onrender.com/",
+      "description": "Discover curated cafes and top-rated restaurants across 12 Dhaka neighborhoods including Banani, Gulshan, Dhanmondi, and Uttara.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://kothay-boshbo.onrender.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Popular Cafes & Restaurants in Dhaka",
+      "description": "Top reviewed cafes and restaurants across Dhaka, Bangladesh",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "CafeOrCoffeeShop",
+            "name": "NORTH END Coffee Roasters",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Banani",
+              "addressRegion": "Dhaka",
+              "addressCountry": "BD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.6",
+              "reviewCount": "4900"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "CafeOrCoffeeShop",
+            "name": "Barcode Cafe",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "House 55/B Rd No # 21",
+              "addressLocality": "Banani",
+              "addressRegion": "Dhaka",
+              "addressCountry": "BD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.3",
+              "reviewCount": "4600"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "CafeOrCoffeeShop",
+            "name": "North End Coffee Roasters Banani",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Road 11, Block F",
+              "addressLocality": "Banani",
+              "addressRegion": "Dhaka",
+              "addressCountry": "BD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.6",
+              "reviewCount": "3200"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "CafeOrCoffeeShop",
+            "name": "The Black Cup Banani",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Road 11",
+              "addressLocality": "Banani",
+              "addressRegion": "Dhaka",
+              "addressCountry": "BD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.5",
+              "reviewCount": "2400"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "CafeOrCoffeeShop",
+            "name": "Boomers Cafe",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Banani",
+              "addressRegion": "Dhaka",
+              "addressCountry": "BD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.1",
+              "reviewCount": "2200"
+            }
+          }
+        }
+      ]
+    }
+    </script>
+
     <!-- Open Graph / LinkedIn / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kothay-boshbo.onrender.com/">
@@ -801,7 +926,20 @@
 </div>
 
 <!-- 12 AREA SELECTORS -->
-<div class="areas" id="areas"></div>
+<div class="areas" id="areas">
+    <button class="area-btn active" type="button" data-area="Banani" aria-label="Select Banani">Banani</button>
+    <button class="area-btn" type="button" data-area="Gulshan" aria-label="Select Gulshan">Gulshan</button>
+    <button class="area-btn" type="button" data-area="Dhanmondi" aria-label="Select Dhanmondi">Dhanmondi</button>
+    <button class="area-btn" type="button" data-area="Uttara" aria-label="Select Uttara">Uttara</button>
+    <button class="area-btn" type="button" data-area="Mirpur" aria-label="Select Mirpur">Mirpur</button>
+    <button class="area-btn" type="button" data-area="Mohakhali" aria-label="Select Mohakhali">Mohakhali</button>
+    <button class="area-btn" type="button" data-area="Badda" aria-label="Select Badda">Badda</button>
+    <button class="area-btn" type="button" data-area="Khilgaon" aria-label="Select Khilgaon">Khilgaon</button>
+    <button class="area-btn" type="button" data-area="Bashundhara R/A" aria-label="Select Bashundhara R/A">Bashundhara R/A</button>
+    <button class="area-btn" type="button" data-area="Bailey Road" aria-label="Select Bailey Road">Bailey Road</button>
+    <button class="area-btn" type="button" data-area="Old Dhaka" aria-label="Select Old Dhaka">Old Dhaka</button>
+    <button class="area-btn" type="button" data-area="Mohammadpur" aria-label="Select Mohammadpur">Mohammadpur</button>
+</div>
 
 <!-- SEARCH & SORT TOOLBAR -->
 <div class="toolbar">
@@ -810,7 +948,20 @@
         <input id="searchInput" type="search" placeholder="Search by name, cuisine, road, or area...">
     </div>
     <div class="toolbar-controls">
-        <select id="areaSelect" aria-label="Select Area"></select>
+        <select id="areaSelect" aria-label="Select Area">
+            <option value="Banani" selected>📍 Banani</option>
+            <option value="Gulshan">📍 Gulshan</option>
+            <option value="Dhanmondi">📍 Dhanmondi</option>
+            <option value="Uttara">📍 Uttara</option>
+            <option value="Mirpur">📍 Mirpur</option>
+            <option value="Mohakhali">📍 Mohakhali</option>
+            <option value="Badda">📍 Badda</option>
+            <option value="Khilgaon">📍 Khilgaon</option>
+            <option value="Bashundhara R/A">📍 Bashundhara R/A</option>
+            <option value="Bailey Road">📍 Bailey Road</option>
+            <option value="Old Dhaka">📍 Old Dhaka</option>
+            <option value="Mohammadpur">📍 Mohammadpur</option>
+        </select>
         <select id="sortSelect" aria-label="Sort places">
             <option value="reviews" selected>Sort by Most Reviews (Default)</option>
             <option value="rating">Sort by Highest Rating</option>
@@ -825,10 +976,101 @@
         <div class="list-header">
             <div>
                 <h2 id="sectionTitle">Cafes in Banani</h2>
-                <div class="result-count" id="resultCount"></div>
+                <div class="result-count" id="resultCount">Showing top curated places in Banani</div>
             </div>
         </div>
-        <div class="cards" id="cards"></div>
+        <div class="cards" id="cards">
+            <!-- Pre-rendered for instant Search Engine (Googlebot) Crawling & Zero-JS Fallback -->
+            <article class="card" id="card-dhaka-c-513">
+                <img class="card-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmR8-7eYSv-ViNHVk6NYyWCR6iXra5Czr0UYK_hWawL1w-yU4D4O5yA3Q-00bQX5hDMm-bRlEFLZftLDdbyUSV8TYxgqBGf-nZbWQISLg2YRcaIQ6GwhbD7m_88Mm_teEoAyt77=w600-h400-k-no" alt="NORTH END Coffee Roasters" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">NORTH END Coffee Roasters</div>
+                    <div class="card-meta">
+                        <span class="rating">★ 4.6</span>
+                        <span class="reviews-count">(4.9K reviews)</span> · 
+                        <span>Banani</span><br>
+                        <span>📍 Banani, Dhaka</span><br>
+                        <small style="color:#888">Coffee, Bakery &amp; Desserts</small>
+                    </div>
+                    <a class="maps-link" href="https://www.google.com/maps/place/NORTH+END+Coffee+Roasters/data=!4m7!3m6!1s0x3755c7ed0165cef7:0x6be1b97c7a9df434!8m2!3d23.7938498!4d90.4064674!16s%2Fg%2F11gxj6snxx!19sChIJ985lAe3HVTcRNPSdeny54Ws?authuser=0&amp;hl=en&amp;g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&amp;rclk=1" target="_blank" rel="noopener">
+                        View on Google Maps ↗
+                    </a>
+                </div>
+                <button class="save-btn" aria-label="Save NORTH END Coffee Roasters">♡</button>
+            </article>
+
+            <article class="card" id="card-dhaka-c-517">
+                <img class="card-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk1AuewYEGMzyGj0EodAq6rPPNQZHCvhCwm3aWjZrJCf50kIj4ayies21K5K_OjUgAxOEBUh-y2graWi2XWzbYhAOPvOsCSqrmdoPGswbhuBsAx6ZnRPORbr0ESfW6-UpDtBj27=w600-h400-k-no" alt="Barcode Cafe" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">Barcode Cafe</div>
+                    <div class="card-meta">
+                        <span class="rating">★ 4.3</span>
+                        <span class="reviews-count">(4.6K reviews)</span> · 
+                        <span>Banani</span><br>
+                        <span>📍 House 55/B Rd No # 21, Banani, Dhaka</span><br>
+                        <small style="color:#888">Coffee, Bakery &amp; Desserts</small>
+                    </div>
+                    <a class="maps-link" href="https://www.google.com/maps/place/Barcode+Cafe/data=!4m7!3m6!1s0x3755c79caf9caf09:0x49b9e24aec1d45ef!8m2!3d23.7945957!4d90.4059036!16s%2Fg%2F11cjj1b7m6!19sChIJCa-cr5zHVTcR70Ud7EriuUk?authuser=0&amp;hl=en&amp;g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&amp;rclk=1" target="_blank" rel="noopener">
+                        View on Google Maps ↗
+                    </a>
+                </div>
+                <button class="save-btn" aria-label="Save Barcode Cafe">♡</button>
+            </article>
+
+            <article class="card" id="card-dhaka-c-725">
+                <img class="card-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlGXR4-sUuMI8hMOZrac3Uz28UchCXdSsJqihpfP8Bu6PGvP2jVx6PX518QwVnz9Obp4-KLAPUkOvUJqbrT6GvktddSTWiBls6pJ7xo8mqNUQku1s1XefUZLla0vZKGLeapMTXZ=w600-h400-k-no" alt="North End Coffee Roasters Banani" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">North End Coffee Roasters Banani</div>
+                    <div class="card-meta">
+                        <span class="rating">★ 4.6</span>
+                        <span class="reviews-count">(3.2K reviews)</span> · 
+                        <span>Banani</span><br>
+                        <span>📍 Road 11, Block F, Banani, Dhaka</span><br>
+                        <small style="color:#888">Pour Over, Americano, Cinnamon Rolls</small>
+                    </div>
+                    <a class="maps-link" href="https://www.google.com/maps/search/?api=1&amp;query=North+End+Coffee+Roasters+Banani+Dhaka" target="_blank" rel="noopener">
+                        View on Google Maps ↗
+                    </a>
+                </div>
+                <button class="save-btn" aria-label="Save North End Coffee Roasters Banani">♡</button>
+            </article>
+
+            <article class="card" id="card-dhaka-c-719">
+                <img class="card-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlWZ0iYbZwz00HmI_PiG2NjGqo_HkZJnMLKLrGE6IiZB4jC_GoHccqJfdCnrQbI2SsgtOCYKtFYq_O1YUb_89KspYhR1WNhQhUdWG40q_NaFDPXEOP9tEVRPL_dbq5NnrP5wqCCzg=w600-h400-k-no" alt="The Black Cup Banani" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">The Black Cup Banani</div>
+                    <div class="card-meta">
+                        <span class="rating">★ 4.5</span>
+                        <span class="reviews-count">(2.4K reviews)</span> · 
+                        <span>Banani</span><br>
+                        <span>📍 Road 11, Banani, Dhaka</span><br>
+                        <small style="color:#888">Craft Espresso, Sourdough, Cheesecake</small>
+                    </div>
+                    <a class="maps-link" href="https://www.google.com/maps/search/?api=1&amp;query=The+Black+Cup+Banani+Dhaka" target="_blank" rel="noopener">
+                        View on Google Maps ↗
+                    </a>
+                </div>
+                <button class="save-btn" aria-label="Save The Black Cup Banani">♡</button>
+            </article>
+
+            <article class="card" id="card-dhaka-c-526">
+                <img class="card-image" src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkzIr96oHu1Ki7cA3jBZHbxcB7fcaOKY0_Qls88JqDdokI6WRJfa5s8uMtCmi2_UBwS8y1c3m92ylXfwYw3AQwTF7o3lKuOh71LlQv_af0qCsFluIQKCyBvLlvMHqAWQhQXc1lno2iZN_A=w600-h400-k-no" alt="Boomers Cafe" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">Boomers Cafe</div>
+                    <div class="card-meta">
+                        <span class="rating">★ 4.1</span>
+                        <span class="reviews-count">(2.2K reviews)</span> · 
+                        <span>Banani</span><br>
+                        <span>📍 Banani, Dhaka</span><br>
+                        <small style="color:#888">Coffee, Bakery &amp; Desserts</small>
+                    </div>
+                    <a class="maps-link" href="https://www.google.com/maps/place/Boomers+Cafe/data=!4m7!3m6!1s0x3755c70e66eeb1a5:0x465ded5d37842779!8m2!3d23.79378!4d90.4043527!16s%2Fg%2F1ttp8nvr!19sChIJpbHuZg7HVTcReSeEN13tXUY?authuser=0&amp;hl=en&amp;g_ep=EgoyMDI2MDkwMi4wIJJjKgBIAVAD&amp;rclk=1" target="_blank" rel="noopener">
+                        View on Google Maps ↗
+                    </a>
+                </div>
+                <button class="save-btn" aria-label="Save Boomers Cafe">♡</button>
+            </article>
+        </div>
     </section>
 
     <section class="map-container" id="mapSection">
